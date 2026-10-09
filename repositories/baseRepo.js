@@ -117,7 +117,17 @@ class BaseRepository {
     return record;
   }
 
-  // 7. Đếm tổng số bản ghi
+  // 7. Xóa mềm bản ghi (đánh dấu deleted)
+  async softDelete(id) {
+    const record = await this.findById(id);
+    if (!record) return null;
+
+    const sql = `UPDATE \`${this.tableName}\` SET is_deleted = 1 WHERE id = ?`;
+    await this.db.execute(sql, [id]);
+    return record;
+  }
+
+  // 8. Đếm tổng số bản ghi
   async count() {
     const sql = `SELECT COUNT(*) AS total FROM \`${this.tableName}\``;
     const [rows] = await this.db.query(sql);

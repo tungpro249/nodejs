@@ -1,9 +1,9 @@
 const userRepo = require("../repositories/userRepo");
 const bcrypt = require('bcrypt');
-const { ConflictRequestError, NotFoundError } = require('../utils/errorResponse');
+const { ConflictRequestError, NotFoundError, BadRequestError } = require('../utils/errorResponse');
 
 class AuthService {
-     // 1. Đăng ký tài khoản người dùng mới (Register)
+  // 1. Đăng ký tài khoản người dùng mới (Register)
   register = async ({ name, email, password }) => {
     // Kiểm tra xem email đã tồn tại trong DB chưa
     const existingUser = await userRepo.findByEmail(email);
@@ -22,7 +22,14 @@ class AuthService {
       password: hashedPassword
     });
   };
-
+  login = async ({ email, password }) => {
+    // Kiểm tra xem email đã tồn tại trong DB chưa
+    const foundUser = await userRepo.findByEmail(email);
+    if (!foundUser) {
+      throw new BadRequestError('Email không tồn tại trong hệ thống');
+    }
+    
+  }
 }
 
 module.exports = new AuthService();

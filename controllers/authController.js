@@ -11,6 +11,19 @@ class AuthController {
             metadata: newUser
         }).send(res);
     };
+
+    login = async () => {
+        
+    };
+
+    refreshToken = async () => {
+
+    };
+
+    logout = async () => {
+
+    };
+
 }
 
 module.exports = new AuthController();

@@ -8,7 +8,7 @@ class UserController {
   getAllUsers = async (req, res) => {
     new OK({
       message: 'Lấy danh sách user thành công',
-      metadata: await userService.getAllUsers()
+      metadata: await userService.getAllUsers(req.query)
     }).send(res);
   };
 
