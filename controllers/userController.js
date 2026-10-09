@@ -4,16 +4,6 @@ const userService = require('../services/userService');
 const { OK, CREATED } = require('../utils/successResponse');
 
 class UserController {
-  // 1. Đăng ký tài khoản mới (Register)
-  register = async (req, res) => {
-    const { name, email, password } = req.body;
-    const newUser = await userService.register({ name, email, password });
-    new CREATED({
-      message: 'Đăng ký tài khoản thành công',
-      metadata: newUser
-    }).send(res);
-  };
-
   // 2. Lấy danh sách tất cả users
   getAllUsers = async (req, res) => {
     new OK({

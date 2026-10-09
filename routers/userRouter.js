@@ -7,9 +7,6 @@ const asyncHandler = require('../utils/asyncHandler');
 
 // Định nghĩa các route cho tài nguyên User
 
-// POST /api/v1/users/register -> Đăng ký tài khoản mới (name, email, password)
-router.post('/register', validateRegister, asyncHandler(userController.register));
-
 // GET /api/v1/users -> Lấy tất cả user
 router.get('/', asyncHandler(userController.getAllUsers));
 

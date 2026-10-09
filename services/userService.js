@@ -20,26 +20,6 @@ class UserService {
     return user;
   };
 
-  // 3. Đăng ký tài khoản người dùng mới (Register)
-  register = async ({ name, email, password }) => {
-    // Kiểm tra xem email đã tồn tại trong DB chưa
-    const existingUser = await userRepo.findByEmail(email);
-    if (existingUser) {
-      throw new ConflictRequestError('Email này đã tồn tại trong hệ thống');
-    }
-
-    // Mã hóa mật khẩu bằng bcrypt
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Lưu vào database
-    return await userRepo.create({
-      name,
-      email,
-      password: hashedPassword
-    });
-  };
-
   // 4. Tạo mới user (tương thích các route cũ, mặc định pass nếu không truyền)
   createUser = async ({ name, email, password = '123456' }) => {
     return await this.register({ name, email, password });
