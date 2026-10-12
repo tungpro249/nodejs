@@ -5,6 +5,7 @@ const categorySchema = {
   columns: {
     id: { type: 'INT AUTO_INCREMENT PRIMARY KEY' },
     name: { type: 'VARCHAR(100)', required: true },
+    description: { type: 'TEXT', required: true },
     status: { type: 'VARCHAR(50)', default: "'active'" },
     created_at: { type: 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP' },
   },
@@ -12,6 +13,7 @@ const categorySchema = {
   selectFields: [
     'id',
     'name',
+    'description',
     'status',
     'created_at AS createdAt',
   ]

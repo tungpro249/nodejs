@@ -133,6 +133,26 @@ class BaseRepository {
     const [rows] = await this.db.query(sql);
     return rows[0].total;
   }
+
+  // 9.Hàm phân trang dùng chung cho MỌI bảng trong dự án
+  async paginate({ page = 1, limit = 10 } = {}) {
+    const pageNum = Math.max(1, Number(page));
+    const limitNum = Math.max(1, Number(limit));
+    const offset = (pageNum - 1) * limitNum;
+    const [data, total] = await Promise.all([
+      this.findAll({ limit: limitNum, offset }),
+      this.count(),
+    ]);
+    return {
+      data,
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        totalPages: Math.ceil(total / limitNum),
+      },
+    };
+  }
 }
 
 module.exports = BaseRepository;

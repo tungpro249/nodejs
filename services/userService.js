@@ -10,23 +10,8 @@ const {
 
 class UserService {
   // 1. Lấy danh sách tất cả user
-  getAllUsers = async ({ page = 1, limit = 10 } = {}) => {
-    const pageNum = Math.max(1, Number(page));
-    const limitNum = Math.max(1, Number(limit));
-    const offset = (pageNum - 1) * limitNum;
-    const [users, total] = await Promise.all([
-      userRepo.findAll({ limit: limitNum, offset }),
-      userRepo.count(),
-    ]);
-    return {
-      data: users,
-      pagination: {
-        page: pageNum,
-        limit: limitNum,
-        total,
-        totalPages: Math.ceil(total / limitNum),
-      },
-    };
+  getAllUsers = async (query) => {
+    return await userRepo.paginate(query);
   };
 
   // 2. Lấy 1 user theo ID
