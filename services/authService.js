@@ -1,5 +1,6 @@
 const userRepo = require("../repositories/userRepo");
 const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
 const { ConflictRequestError, NotFoundError, BadRequestError } = require('../utils/errorResponse');
 
 class AuthService {
@@ -22,6 +23,7 @@ class AuthService {
       password: hashedPassword
     });
   };
+
   login = async ({ email, password }) => {
     // Kiểm tra xem email đã tồn tại trong DB chưa
     const foundUser = await userRepo.findByEmail(email);
@@ -29,7 +31,49 @@ class AuthService {
       throw new BadRequestError('Email không tồn tại trong hệ thống');
     }
     
-  }
+    // So sánh password nhập vào với password trong DB
+    const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+    if (!isPasswordValid) {
+      throw new BadRequestError('Password không chính xác');
+    }
+
+    const payload = {
+      id: foundUser.id,
+      email: foundUser.email,
+      role: foundUser.role, // 👈 Cần thiết cho middleware checkRole của bạn!
+    };
+
+    // Tạo JWT token
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN
+    });
+
+    return {
+      user: {
+        id: foundUser.id,
+        name: foundUser.name,
+        email: foundUser.email,
+        role: foundUser.role,
+      },
+      accessToken,
+    };
+  };
+
+  refreshToken = async (refreshToken) => {
+    
+  };
+
+  changePassword = async (userId, oldPassword, newPassword) => {
+    
+  };
+
+  forgotPassword = async (email) => {
+    
+  };
+
+  resetPassword = async (email, password, confirmPassword) => {
+    
+  };
 }
 
 module.exports = new AuthService();
