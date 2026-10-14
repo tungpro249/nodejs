@@ -23,6 +23,13 @@ class UserRepository extends BaseRepository {
     const [rows] = await this.db.execute(sql, [email.toLowerCase().trim()]);
     return rows[0] || null;
   }
+
+  // 2. Tìm user theo ID kèm mật khẩu (phục vụ chức năng đổi mật khẩu / xác thực)
+  async findByIdWithPassword(id) {
+    const sql = `SELECT * FROM \`${this.tableName}\` WHERE id = ? LIMIT 1`;
+    const [rows] = await this.db.execute(sql, [id]);
+    return rows[0] || null;
+  }
 }
 
 module.exports = new UserRepository();

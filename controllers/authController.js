@@ -32,7 +32,8 @@ class AuthController {
   };
 
   logout = async (req, res) => {
-    const result = await authService.logout(req.user.userId);
+    const userId = req.user?.userId || req.user?.id;
+    const result = await authService.logout(userId);
     new OK({
       message: "Logout thành công",
       metadata: result,
@@ -41,8 +42,9 @@ class AuthController {
 
   changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
+    const userId = req.user?.userId || req.user?.id;
     const result = await authService.changePassword(
-      req.user.userId,
+      userId,
       oldPassword,
       newPassword,
     );
@@ -62,8 +64,13 @@ class AuthController {
   };
 
   resetPassword = async (req, res) => {
-    const { email, password, confirmPassword } = req.body;
-    const result = await authService.resetPassword(email, password, confirmPassword);
+    const { email, password, confirmPassword, token, resetToken } = req.body;
+    const result = await authService.resetPassword(
+      email,
+      password,
+      confirmPassword,
+      token || resetToken,
+    );
     new OK({
       message: "Reset password thành công",
       metadata: result,
