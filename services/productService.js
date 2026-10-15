@@ -6,17 +6,19 @@ const {
 } = require("../utils/errorResponse");
 
 class ProductService {
-  getAllproduct = async (query) => {
+  getAllProducts = async (query) => {
     return await productRepo.paginate(query);
   };
+  getAllproduct = this.getAllProducts;
 
-  getDetailProduct = async (id) => {
+  getProductById = async (id) => {
     const product = await productRepo.findById(id);
     if (!product) {
       throw new NotFoundError("Không tìm thấy sản phẩm");
     }
     return product;
   };
+  getDetailProduct = this.getProductById;
 
   createProduct = async (body) => {
     return await productRepo.create(body);

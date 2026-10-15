@@ -4,6 +4,7 @@ const router = express.Router();
 const userRouter = require('./userRouter');
 const authRouter = require('./authRouter');
 const categoryRouter = require('./categoryRouter');
+const productRouter = require('./productRouter');
 
 // Route kiểm tra trạng thái API (Health check)
 router.get('/', (req, res) => {
@@ -17,6 +18,7 @@ router.get('/', (req, res) => {
 // Gom nhóm các router theo tài nguyên và version API
 router.use('/api/v1/users', userRouter);
 router.use('/api/v1/auth', authRouter);
-router.use('/api/v1/category', categoryRouter);
+router.use('/api/v1/categories', categoryRouter);
+router.use('/api/v1/products', productRouter);
 
 module.exports = router;
